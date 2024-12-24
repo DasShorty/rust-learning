@@ -15,6 +15,15 @@ fn main() {
         Operation::Quotient => println!("Quotient ({input_one} / {input_two}): {}", input_one / input_two),
         Operation::Remainder => println!("Remainder ({input_one} % {input_two}): {}", input_one % input_two),
     }
+
+    loop {
+        println!("Press any key to quit program");
+        let mut input = String::new();
+        stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+        break;
+    }
 }
 
 enum Operation {
