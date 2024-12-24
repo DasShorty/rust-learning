@@ -1,30 +1,56 @@
-use std::io;
+use rand::random_range;
+use std::io::stdin;
 
 fn main() {
+    println!("Game: Guess the Number!");
 
-    let a = [1,2,3,4,5];
+    let random_number = generate_number(1, 100);
 
-    println!("Please enter an array index.");
+    let mut guessed = false;
 
-    let mut index = String::new();
+    while !guessed {
 
-    io::stdin()
-        .read_line(&mut index)
-        .expect("Failed to read line");
+        let guess = let_guess();
 
-    let index: usize = index
-        .trim()
-        .parse()
-        .expect("Index entered was not a number");
+        match guess.cmp(&random_number) {
+            std::cmp::Ordering::Less => println!("Too small!"),
+            std::cmp::Ordering::Greater => println!("Too big!"),
+            std::cmp::Ordering::Equal => {
+                println!("You win!");
+                guessed = true;
+                break;
+            }
+        }
 
-    if index >= a.len() {
-        println!("Index entered was out of range");
-        return;
     }
 
-    let element = a[index];
+}
 
-    println!("The value of the element at index {index} is: {element}");
+fn let_guess() -> i32 {
+    let mut guess = String::new();
 
+    println!("Please input your guess: ");
 
+    match stdin().read_line(&mut guess) {
+        Ok(_) => {
+            println!("You guessed: {}", guess);
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            let_guess();
+        }
+    }
+
+    guess.trim().parse().unwrap_or_else(|_| {
+        println!("Please input a number!");
+        let_guess()
+    })
+}
+
+fn generate_number(lowest: i32, highest: i32) -> i32 {
+    println!("Generating random number between {lowest} and {highest}...");
+    let random_number = random_range(lowest..highest);
+    println!("Generated a random number");
+
+    random_number
 }
